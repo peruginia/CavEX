@@ -46,6 +46,8 @@
 #include "cNBT/nbt.h"
 #include "cglm/cglm.h"
 #include "lodepng/lodepng.h"
+#include "platform/audio.h"
+
 
 int main(void) {
 	gstate.quit = false;
@@ -64,6 +66,10 @@ int main(void) {
 
 #ifdef PLATFORM_WII
 	fatInitDefault();
+   audio_init();
+   // Prova a caricare i suoni (assicurati che esistano sulla SD!)
+   audio_load_resources();   
+   audio_play_music("music/calm1.raw");  
 #endif
 
 	config_create(&gstate.config_user, "config.json");
@@ -108,6 +114,8 @@ int main(void) {
 						   / DAY_TICK_MS)
 					  % DAY_LENGTH_TICKS)
 			/ (float)DAY_LENGTH_TICKS;
+      
+      audio_update_streams();
 
 		clin_update();
 
